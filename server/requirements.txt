@@ -1,1 +1,5 @@
+Flask
 flask-cors
+pymongo
+python-dotenv
+boto3
