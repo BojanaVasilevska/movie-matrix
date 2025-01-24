@@ -1,3 +1,5 @@
+from http.client import InvalidURL
+from unittest import result
 from bson import ObjectId
 from bson.json_util import dumps
 from flask import jsonify, current_app
@@ -54,9 +56,17 @@ class Movie:
         """
         mongo = current_app.extensions['mongo']
         movies_collection = mongo["movies"]
-        result = movies_collection.update_one({"_id": ObjectId(movie_id)}, {"$set": data})
+        
+        try:
+            movie_id = ObjectId(movie_id)
+        except InvalidURL:
+            return jsonify({"error": "Invalid movie ID format"}), 400
+        
+        result = movies_collection.update_one({"_id": movie_id}, {"$set": data})
+        
         if result.modified_count == 0:
             return jsonify({"error": "Movie not found or no change made"}), 404
+        
         return jsonify({"message": "Movie updated"}), 200
 
     @staticmethod
@@ -66,9 +76,16 @@ class Movie:
         """
         mongo = current_app.extensions['mongo']
         movies_collection = mongo["movies"]
-        result = movies_collection.delete_one({"_id": ObjectId(movie_id)})
+        try:
+            movie_id = ObjectId(movie_id)
+        except InvalidURL:
+            return jsonify({"error": "Invalid movie ID format"}), 400
+        
+        result = movies_collection.delete_one({"_id": movie_id})
+        
         if result.deleted_count == 0:
             return jsonify({"error": "Movie not found"}), 404
+        
         return jsonify({"message": "Movie deleted"}), 200
 
     @staticmethod

@@ -10,6 +10,7 @@ def create_app():
 
     # Enable CORS
     CORS(app)
+    CORS(app, resources={r"/movies/*": {"origins": "http://localhost:3000"}})
 
     # MongoDB client and register 
     client = MongoClient(app.config["MONGO_URI"])
