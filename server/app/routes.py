@@ -1,4 +1,6 @@
-from flask import Blueprint, request, jsonify
+from http.client import InvalidURL
+from bson import ObjectId
+from flask import Blueprint, current_app, request, jsonify
 from .models import Movie
 
 # Blueprint for the main routes
@@ -23,14 +25,41 @@ def get_movie_by_id(movie_id):
     return Movie.get_by_id(movie_id)
 
 # Route to update a movie by ID
-@main.route('/movies/<string:movie_id>', methods=['PUT'])
+@main.route('/movies/<movie_id>', methods=['PUT'])
 def update_movie(movie_id):
-    data = request.get_json()
-    return Movie.update(movie_id, data)
+    try:
+        movie_id = ObjectId(movie_id)
+    except Exception as e:
+        return jsonify({"error": "Invalid movie ID"}), 400
+
+    updated_data = request.get_json()
+
+    if not updated_data:
+        return jsonify({"error": "No data provided"}), 400
+
+    mongo = current_app.extensions['mongo']
+    movies_collection = mongo["movies"]
+
+    result = movies_collection.update_one(
+        {"_id": movie_id},
+        {"$set": updated_data}
+    )
+
+    if result.matched_count == 0:
+        return jsonify({"error": "Movie not found"}), 404
+
+    return jsonify({"message": "Movie updated successfully"}), 200
+
 
 # Route to delete a movie by ID
 @main.route('/movies/<string:movie_id>', methods=['DELETE'])
 def delete_movie(movie_id):
+    try:
+        # Validate ObjectId
+        ObjectId(movie_id)
+    except InvalidURL:
+        return jsonify({"error": "Invalid movie ID format"}), 400
+
     return Movie.delete(movie_id)
 
 # Route to search for movies based on query parameters
