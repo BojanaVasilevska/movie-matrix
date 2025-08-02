@@ -1,11 +1,16 @@
-import './globals.css';
+import "@/app/globals.css";
+import { ReactNode } from "react";
+import { Providers } from "./components/Providers";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-background">
-        <main>{children}</main>
+      <body className="min-h-screen w-full bg-background text-foreground">
+        <Providers>
+          <main >{children}</main>
+        </Providers>
       </body>
     </html>
   );
 }
+

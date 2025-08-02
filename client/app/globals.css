@@ -1,3 +1,177 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Define CSS variables & base styles inside the base layer */
+@layer base {
+  :root {
+    /* Ultra Modern Design System */
+    --background: 225 25% 5%;
+    --foreground: 0 0% 98%;
+
+    --card: 225 20% 8%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 225 20% 8%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 270 100% 65%;
+    --primary-foreground: 0 0% 5%;
+
+    --secondary: 225 15% 12%;
+    --secondary-foreground: 0 0% 90%;
+
+    --muted: 225 10% 15%;
+    --muted-foreground: 225 5% 60%;
+
+    --accent: 315 100% 70%;
+    --accent-foreground: 0 0% 5%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 225 15% 20%;
+    --input: 225 20% 10%;
+    --ring: 270 100% 65%;
+
+    --gradient-main: linear-gradient(135deg, hsl(270 100% 65%) 0%, hsl(315 100% 70%) 25%, hsl(195 100% 75%) 50%, hsl(240 100% 70%) 75%, hsl(290 100% 65%) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(225 20% 8%) 0%, hsl(240 25% 12%) 100%);
+    --gradient-hover: linear-gradient(135deg, hsl(270 100% 65% / 0.1) 0%, hsl(315 100% 70% / 0.15) 100%);
+    --gradient-accent: linear-gradient(45deg, hsl(270 100% 65% / 0.2) 0%, hsl(315 100% 70% / 0.3) 100%);
+    
+    --shadow-glow: 0 0 40px hsl(270 100% 65% / 0.4), 0 0 80px hsl(315 100% 70% / 0.2);
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --shadow-card: 0 20px 40px -20px hsl(270 100% 65% / 0.3);
+    --shadow-neon: 0 0 20px hsl(270 100% 65% / 0.8);
+
+    --radius: 1rem;
+    --blur-glass: blur(16px);
+
+    --sidebar-background: 225 20% 8%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 270 100% 65%;
+    --sidebar-primary-foreground: 0 0% 5%;
+    --sidebar-accent: 225 15% 12%;
+    --sidebar-accent-foreground: 0 0% 85%;
+    --sidebar-border: 225 15% 20%;
+    --sidebar-ring: 270 100% 65%;
+  }
+
+  /* Dark mode */
+  .dark {
+    --background: 217 91% 30%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 0% / 0.2;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 262 83% 25%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 193 84% 35%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 262 83% 25%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 100% / 0.1;
+    --muted-foreground: 0 0% 100% / 0.6;
+
+    --accent: 239 84% 57%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 100% / 0.15;
+    --input: 262 83% 25%;
+    --ring: 239 84% 57%;
+
+    --gradient-main: linear-gradient(135deg, hsl(217 91% 30%), hsl(193 84% 35%));
+    --gradient-form: linear-gradient(90deg, hsl(262 83% 25%), hsl(239 84% 47%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100% / 0.08), hsl(0 0% 100% / 0.03));
+    --gradient-hover: linear-gradient(145deg, hsl(0 0% 100% / 0.15), hsl(0 0% 100% / 0.08));
+    
+    --shadow-glow: 0 10px 40px hsl(217 91% 30% / 0.4);
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.5);
+    --shadow-form: 0 4px 20px hsl(262 83% 25% / 0.5);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Global styles */
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom animations */
+@keyframes gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
+  50% { box-shadow: 0 0 40px hsl(var(--primary) / 0.6), 0 0 60px hsl(var(--accent) / 0.4); }
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Your custom classes */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
